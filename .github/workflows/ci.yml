@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  core:
+    name: spectraquant-core
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install JS deps
+        run: pnpm install
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Install spectraquant-core
+        run: uv pip install -e "packages/spectraquant-core[dev]" --system
+
+      - name: pytest
+        run: pytest packages/spectraquant-core -q
+
+      - name: ruff
+        run: ruff check packages/spectraquant-core
+
+      - name: mypy
+        run: mypy packages/spectraquant-core/src
