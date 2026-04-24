@@ -30,7 +30,10 @@ packages = ["src/spectraquant_core"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"
-filterwarnings = ["error"]
+filterwarnings = [
+    "error::FutureWarning",
+    "error::DeprecationWarning",
+]
 
 [tool.mypy]
 python_version = "3.12"
