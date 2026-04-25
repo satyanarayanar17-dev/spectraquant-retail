@@ -1,0 +1,11 @@
+{
+  "name": "@spectraquant/compliance-rules",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.js",
+    "./forbidden_words.json": "./forbidden_words.json"
+  }
+}
+

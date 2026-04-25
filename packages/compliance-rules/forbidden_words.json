@@ -1,0 +1,82 @@
+{
+  "version": "2026.04.21",
+  "directive_terms": [
+    "buy",
+    "sell",
+    "short",
+    "go long",
+    "go short",
+    "exit",
+    "enter",
+    "purchase",
+    "dump",
+    "trim",
+    "load up",
+    "hold off",
+    "wait"
+  ],
+  "advisory_terms": [
+    "recommend",
+    "recommendation",
+    "advise",
+    "advice",
+    "suggest you",
+    "you should",
+    "you must",
+    "ought to",
+    "we suggest",
+    "our pick",
+    "top pick",
+    "best stock",
+    "must-buy",
+    "must buy",
+    "must-have",
+    "no-brainer"
+  ],
+  "outcome_promises": [
+    "guaranteed",
+    "risk-free",
+    "sure shot",
+    "sure-shot",
+    "assured",
+    "will rise",
+    "will fall",
+    "will return",
+    "will deliver",
+    "doubles",
+    "triples",
+    "10x",
+    "100x",
+    "multibagger",
+    "outperform guaranteed"
+  ],
+  "target_signals": [
+    "target price",
+    "price target",
+    "tp",
+    "stop loss",
+    "sl",
+    "target of",
+    "stoploss",
+    "trigger price"
+  ],
+  "regulated_claims": [
+    "sebi-registered",
+    "sebi registered",
+    "ra-registered",
+    "research analyst",
+    "investment advisor",
+    "investment adviser",
+    "portfolio manager",
+    "pms",
+    "ria"
+  ],
+  "exempt_contexts": [
+    "/legal/disclaimer",
+    "/methodology",
+    "compliance_log_entries",
+    "copy.disclaimer.banner",
+    "copy.disclaimer.footer"
+  ]
+}
+

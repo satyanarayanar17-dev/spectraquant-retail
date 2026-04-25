@@ -1,0 +1,88 @@
+{
+  "brand": {
+    "name": "SpectraQuant Retail",
+    "tagline": "Factor analytics for Indian equity portfolios."
+  },
+  "footer": {
+    "disclaimer": "For informational purposes only. Not investment advice."
+  },
+  "disclaimer": {
+    "banner": "For informational purposes only. Not investment advice."
+  },
+  "login": {
+    "eyebrow": "Secure access",
+    "title": "Sign in to your workspace",
+    "subtitle": "Use a magic link to access factor analytics for your saved portfolios.",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "you@example.com",
+    "submit": "Send magic link",
+    "submitting": "Sending link...",
+    "success": "Check your inbox for the sign-in link.",
+    "error": "We could not start sign-in right now."
+  },
+  "dashboard": {
+    "eyebrow": "Dashboard",
+    "title": "Factor return monitor",
+    "subtitle": "Review trailing return series across the six tracked factors.",
+    "empty": "Factor return history will appear here once the API is populated.",
+    "footnote": "Source: SpectraQuant factor return series. Timestamps are shown in IST."
+  },
+  "portfolio": {
+    "eyebrow": "Portfolio",
+    "title": "Upload holdings",
+    "subtitle": "Paste rows manually or upload a CSV to compute current factor exposures.",
+    "nameLabel": "Portfolio name",
+    "namePlaceholder": "Core holdings",
+    "manualLabel": "Manual entry",
+    "manualHelper": "Use CSV rows with either symbol,qty,avg_price or symbol,weight.",
+    "manualPlaceholder": "symbol,qty,avg_price\nTCS,10,3600\nINFY,8,1480",
+    "fileLabel": "CSV file",
+    "fileHelper": "A parsed file replaces the manual rows shown above.",
+    "submit": "Save portfolio",
+    "submitting": "Saving portfolio...",
+    "exposuresTitle": "Latest factor exposures",
+    "exposuresSubtitle": "Exposures are computed from the most recent factor score snapshot.",
+    "successPrefix": "Saved portfolio",
+    "previewTitle": "Holdings preview",
+    "error": "We could not save this portfolio."
+  },
+  "analysis": {
+    "eyebrow": "Attribution",
+    "title": "Run factor attribution",
+    "subtitle": "Load a portfolio and review beta estimates, alpha, fit, and collinearity signals.",
+    "portfolioIdLabel": "Portfolio ID",
+    "portfolioIdPlaceholder": "Paste a portfolio ID",
+    "submit": "Run analysis",
+    "submitting": "Running analysis...",
+    "empty": "Paste a portfolio ID to run attribution.",
+    "alpha": "Alpha",
+    "rSquared": "R²",
+    "adjRSquared": "Adjusted R²",
+    "conditionNumber": "Condition number",
+    "collinearity": "Factor exposures in this portfolio are correlated, which makes it harder to isolate the contribution of each factor individually. Individual factor contributions should be interpreted with caution. The combined R² of the model is more reliable than any single β.",
+    "error": "We could not run analysis right now."
+  },
+  "states": {
+    "checkingSession": "Checking session...",
+    "loading": "Loading data..."
+  },
+  "betaTable": {
+    "title": "Factor betas",
+    "factor": "Factor",
+    "beta": "β",
+    "se": "SE",
+    "ci": "95% CI",
+    "pvalue": "P-value",
+    "significance": "Significance",
+    "significant": "95% CI clear",
+    "notSignificant": "n.s."
+  },
+  "factors": {
+    "momentum": "Momentum",
+    "value": "Value",
+    "quality": "Quality",
+    "low_vol": "Low-vol",
+    "size": "Size",
+    "composite": "Composite"
+  }
+}
