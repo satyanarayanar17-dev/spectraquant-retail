@@ -45,8 +45,9 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     try:
-        import asyncpg  # type: ignore[import-untyped]
         import asyncio
+
+        import asyncpg  # type: ignore[import-untyped]
     except ImportError:
         print("ERROR: asyncpg not installed. Run: uv pip install asyncpg", file=sys.stderr)
         return 1

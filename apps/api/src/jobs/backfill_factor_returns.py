@@ -136,7 +136,11 @@ def main(argv: list[str] | None = None) -> int:
                     time.sleep(2)
                 if not df.empty:
                     prices_frames.append(df)
-                log.info("Fetched batch %d/%d", min(i + batch_size, len(nse_symbols)), len(nse_symbols))
+                log.info(
+                    "Fetched batch %d/%d",
+                    min(i + batch_size, len(nse_symbols)),
+                    len(nse_symbols),
+                )
 
             if not prices_frames:
                 log.error("No price data fetched; aborting")
@@ -274,7 +278,13 @@ def main(argv: list[str] | None = None) -> int:
                         end,
                     )
                     for dt, val in series.dropna().items():
-                        fr_rows.append((factor, dt.date() if hasattr(dt, "date") else dt, float(val)))
+                        fr_rows.append(
+                            (
+                                factor,
+                                dt.date() if hasattr(dt, "date") else dt,
+                                float(val),
+                            )
+                        )
                 except Exception as exc:
                     log.warning("factor_returns failed for %s: %s", factor, exc)
 

@@ -57,7 +57,7 @@ def main(argv: list[str] | None = None) -> int:
         if i == 0:
             headers = [str(c).strip() if c else "" for c in row]
             continue
-        record = dict(zip(headers, row))
+        record = dict(zip(headers, row, strict=False))
         raw_rows.append(record)
     wb.close()
 
@@ -77,7 +77,14 @@ def main(argv: list[str] | None = None) -> int:
     membership_rows: list[tuple[str, str, date | None, date | None]] = []
     for r in raw_rows:
         sym_col = next((v for k, v in r.items() if "symbol" in k.lower()), None)
-        from_col = next((v for k, v in r.items() if "from" in k.lower() or "includ" in k.lower()), None)
+        from_col = next(
+            (
+                v
+                for k, v in r.items()
+                if "from" in k.lower() or "includ" in k.lower()
+            ),
+            None,
+        )
         to_col = next((v for k, v in r.items() if "to" in k.lower() or "exclud" in k.lower()), None)
         if not sym_col:
             continue

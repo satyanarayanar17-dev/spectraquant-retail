@@ -1,0 +1,11 @@
+{
+  "name": "api",
+  "private": true,
+  "scripts": {
+    "dev": "PYTHONPATH=../../packages/spectraquant-core/src uv run --extra dev uvicorn src.main:app --reload --host 0.0.0.0 --port 8000",
+    "build": "uv run python -m compileall src",
+    "lint": "uv run --extra dev ruff check src tests",
+    "typecheck": "PYTHONPATH=../../packages/spectraquant-core/src uv run --extra dev mypy src",
+    "test": "PYTHONPATH=../../packages/spectraquant-core/src uv run --extra dev pytest"
+  }
+}
