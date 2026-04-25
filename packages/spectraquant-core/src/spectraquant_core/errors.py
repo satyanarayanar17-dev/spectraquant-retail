@@ -13,3 +13,8 @@ class InsufficientDataError(ValueError):
 
 class InvalidUniverseError(ValueError):
     """Raised when the symbol universe is invalid or too small."""
+
+
+class PointInTimeLookAheadError(ValueError):
+    """Raised when factor z-scores use a score_date that equals or follows the
+    rebalance date, violating the point-in-time lookahead guard (spec §14.1)."""
