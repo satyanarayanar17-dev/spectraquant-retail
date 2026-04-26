@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
@@ -16,9 +17,35 @@ from src.logging import configure_logging
 from src.routers import admin, analysis, factors, portfolio, user, webhooks
 
 
+def _init_sentry() -> None:
+    """Initialise Sentry SDK when SENTRY_DSN is set. No-op otherwise."""
+    dsn = os.getenv("SENTRY_DSN", "")
+    if not dsn:
+        return
+    try:
+        import sentry_sdk  # type: ignore[import-untyped]
+        from sentry_sdk.integrations.fastapi import (
+            FastApiIntegration,  # type: ignore[import-untyped]
+        )
+        from sentry_sdk.integrations.sqlalchemy import (
+            SqlalchemyIntegration,  # type: ignore[import-untyped]
+        )
+
+        sentry_sdk.init(
+            dsn=dsn,
+            environment=os.getenv("APP_ENV", "development"),
+            release=__version__,
+            traces_sample_rate=0.05,  # 5% trace sampling — keeps quota low
+            integrations=[FastApiIntegration(), SqlalchemyIntegration()],
+        )
+    except ImportError:
+        pass  # sentry-sdk not installed in local dev — silently skip
+
+
 def create_app() -> FastAPI:
     """Create the configured FastAPI application."""
 
+    _init_sentry()
     settings = get_settings()
 
     @asynccontextmanager

@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import hmac
 import json
+import os
 from datetime import UTC, datetime
 from typing import Any
 
@@ -19,6 +20,33 @@ from src.db import DbSession
 router = APIRouter(prefix="/webhooks", tags=["webhooks"])
 
 logger = structlog.get_logger("spectraquant_api.webhooks")
+
+
+def _posthog_capture_subscription_activated(payload: dict[str, Any]) -> None:
+    """Fire subscription_activated event to PostHog via REST API (server-side)."""
+    posthog_key = os.getenv("POSTHOG_API_KEY", "")
+    if not posthog_key:
+        return
+    try:
+        import httpx  # already in deps
+
+        entity: dict[str, Any] = payload.get("subscription", {}).get("entity", {})
+        user_id: str = entity.get("notes", {}).get("user_id", "anonymous")
+        httpx.post(
+            "https://app.posthog.com/capture/",
+            json={
+                "api_key": posthog_key,
+                "event": "subscription_activated",
+                "distinct_id": user_id,
+                "properties": {
+                    "tier": "pro",
+                    "razorpay_subscription_id": entity.get("id", ""),
+                },
+            },
+            timeout=5.0,
+        )
+    except Exception:  # noqa: BLE001
+        pass  # never let analytics block webhook response
 
 
 def _verify_razorpay_signature(body: bytes, signature: str, secret: str) -> bool:
@@ -190,6 +218,7 @@ async def razorpay_webhook(
         log.info("razorpay_subscription_activated")
         await _handle_subscription_activated(payload, session)
         await session.commit()
+        _posthog_capture_subscription_activated(payload)
         return {"status": "ok"}
 
     log.info("razorpay_event_ignored")

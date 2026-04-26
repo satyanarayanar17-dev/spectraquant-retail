@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useState } from "react";
 
 import copy from "@/lib/copy.json";
 import { runAnalysis, type AttributionResult } from "@/lib/api";
+import { track } from "@/lib/analytics";
 import { useRequiredSession } from "@/lib/use-required-session";
 import { BetaTable } from "@/components/BetaTable";
 import { Badge } from "@/components/ui/badge";
@@ -39,6 +40,7 @@ export default function AnalysisPage() {
       const nextResult = await runAnalysis(portfolioId, token);
       setResult(nextResult);
       setStatus("idle");
+      track("portfolio_analyzed", { n_obs: nextResult.n_obs, r_squared: nextResult.r_squared });
     } catch (error) {
       setStatus("error");
       setMessage(error instanceof Error ? error.message : copy.analysis.error);

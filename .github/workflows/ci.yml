@@ -3,8 +3,13 @@ name: CI
 on:
   push:
   pull_request:
+  schedule:
+    - cron: "0 1 * * *"   # nightly 01:00 UTC (06:30 IST) — perf smoke
 
 jobs:
+  # -----------------------------------------------------------------------
+  # 1. Pure-Python core library
+  # -----------------------------------------------------------------------
   core:
     name: spectraquant-core
     runs-on: ubuntu-latest
@@ -41,3 +46,112 @@ jobs:
 
       - name: mypy
         run: mypy packages/spectraquant-core/src
+
+  # -----------------------------------------------------------------------
+  # 2. FastAPI app — lint + type check
+  # -----------------------------------------------------------------------
+  api:
+    name: apps/api
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Install api + core deps
+        run: |
+          uv pip install -e "packages/spectraquant-core[dev]" --system
+          uv pip install -e "apps/api[dev]" --system
+
+      - name: ruff (api)
+        run: ruff check apps/api/src
+
+      - name: mypy (api)
+        run: mypy apps/api/src
+
+  # -----------------------------------------------------------------------
+  # 3. Next.js web — typecheck, lint, compliance, methodology disclosure
+  # -----------------------------------------------------------------------
+  web:
+    name: apps/web
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install JS deps
+        run: pnpm install
+
+      - name: TypeScript typecheck
+        run: pnpm --filter web typecheck
+
+      - name: ESLint
+        run: pnpm --filter web lint
+
+      # Compliance gate — fails build on any forbidden word outside exempt_contexts
+      - name: Compliance check
+        run: pnpm --filter web compliance:check
+
+      # §14.8.3 — carry-back bias disclosure must be present verbatim
+      - name: Methodology disclosure check
+        run: |
+          node - << 'EOF'
+          const fs = require("fs");
+          const src = fs.readFileSync("apps/web/app/methodology/page.tsx", "utf8");
+          const required = [
+            "NEXT_PUBLIC_BACKFILL_START_DATE",
+            "were computed retrospectively",
+            "Back-tested factor returns are subject to look-ahead bias",
+            "Past factor performance does not guarantee future results",
+          ];
+          let failed = false;
+          for (const phrase of required) {
+            if (!src.includes(phrase)) {
+              console.error("FAIL: methodology page missing: " + JSON.stringify(phrase));
+              failed = true;
+            }
+          }
+          if (failed) process.exit(1);
+          console.log("PASS: methodology disclosure present");
+          EOF
+
+  # -----------------------------------------------------------------------
+  # 4. Nightly perf smoke — runs against production on schedule only
+  # -----------------------------------------------------------------------
+  perf-smoke:
+    name: Perf smoke (nightly)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install httpx
+        run: pip install httpx
+
+      - name: Run perf smoke
+        env:
+          API_URL: ${{ secrets.PRODUCTION_API_URL }}
+          API_TOKEN: ${{ secrets.PERF_SMOKE_TOKEN }}
+        run: |
+          python scripts/perf_smoke.py \
+            --url "$API_URL" \
+            --token "$API_TOKEN" \
+            --reps 100 \
+            --p95-limit-ms 5000
