@@ -275,7 +275,7 @@ CREATE INDEX IF NOT EXISTS portfolios_user
   WHERE deleted_at IS NULL;
 
 CREATE UNIQUE INDEX IF NOT EXISTS portfolios_user_contenthash_day_idx
-  ON public.portfolios (user_id, content_hash, (date_trunc('day', created_at)))
+  ON public.portfolios (user_id, content_hash, ((created_at AT TIME ZONE 'UTC')::date))
   WHERE deleted_at IS NULL;
 
 CREATE TRIGGER portfolios_touch_updated_at
