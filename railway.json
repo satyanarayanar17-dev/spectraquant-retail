@@ -1,0 +1,19 @@
+{
+  "$schema": "https://railway.com/railway.schema.json",
+  "build": {
+    "builder": "NIXPACKS",
+    "buildCommand": "pip install uv && uv pip install --system -e packages/spectraquant-core && uv pip install --system -e apps/api",
+    "watchPatterns": [
+      "apps/api/**",
+      "packages/spectraquant-core/**",
+      "railway.json"
+    ]
+  },
+  "deploy": {
+    "startCommand": "uvicorn src.main:app --app-dir apps/api --host 0.0.0.0 --port $PORT",
+    "healthcheckPath": "/health",
+    "healthcheckTimeout": 60,
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 3
+  }
+}
