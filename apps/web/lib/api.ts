@@ -141,3 +141,50 @@ export async function runAnalysis(
     }
   });
 }
+
+export async function exportUserData(token: string): Promise<Blob> {
+  const response = await fetch(`${API_BASE_URL}/api/v1/user/me/export`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    cache: "no-store"
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(errorText || `Request failed with status ${response.status}`);
+  }
+
+  return response.blob();
+}
+
+export async function deleteAccount(
+  token: string
+): Promise<{ status: string; delete_after: string }> {
+  return apiFetch<{ status: string; delete_after: string }>("/api/v1/user/me", {
+    method: "DELETE" as "GET" | "POST",
+    token
+  });
+}
+
+export async function cancelSubscription(
+  token: string
+): Promise<{ status: string; access_until: string }> {
+  return apiFetch<{ status: string; access_until: string }>("/api/v1/billing/cancel", {
+    method: "POST",
+    token
+  });
+}
+
+export type JobRun = {
+  job_name: string;
+  status: string;
+  rows_written: number | null;
+  started_at: string;
+  finished_at: string | null;
+};
+
+export async function getAdminJobs(token: string): Promise<{ jobs: JobRun[] }> {
+  return apiFetch<{ jobs: JobRun[] }>("/api/v1/admin/jobs", { token });
+}

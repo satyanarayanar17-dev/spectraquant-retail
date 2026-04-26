@@ -1,0 +1,41 @@
+---
+title: "Momentum in Indian Equities"
+date: "2024-02-05"
+excerpt: "The momentum factor has shown persistent characteristics in the NSE universe. Here is what the historical data reveals about price continuation in Indian equities."
+---
+
+## Momentum in Indian Equities
+
+Momentum is one of the most replicated findings in empirical finance. Across markets, geographies, and time periods, stocks that have performed strongly over the recent past have tended to continue performing well over the near term. The NSE universe is no exception.
+
+### How momentum is defined
+
+SpectraQuant computes momentum as the 12-month total return of a stock, excluding the most recent month. This "12-1" construction is standard in academic literature and is designed to avoid the short-term reversal effect, where very recent winners briefly underperform.
+
+The score is cross-sectionally ranked and z-scored within the NSE investable universe on each monthly scoring date. Stocks in the top quintile of momentum scores are considered high-momentum; stocks in the bottom quintile are considered low-momentum.
+
+### Historical characteristics in the NSE universe
+
+The momentum factor in Indian equities has displayed several notable characteristics over the SpectraQuant measurement period:
+
+**Sector clustering** — Momentum portfolios in India tend to cluster around sectors in cyclical upswings. During periods of strong domestic consumption growth, consumer discretionary stocks have frequently appeared in high-momentum quintiles. During infrastructure cycles, capital goods names have clustered similarly.
+
+**Drawdown asymmetry** — The momentum factor, globally and in India, is prone to sharp, rapid reversals. These "momentum crashes" have historically coincided with sharp market recoveries from prior drawdowns, when the most-beaten-down stocks bounce most strongly. This is an important characteristic to account for when interpreting momentum exposure in a portfolio.
+
+**Interaction with size** — In the NSE universe, momentum tends to be stronger among mid-cap names than large-caps. Large-cap stocks are more liquid and more closely followed by institutional investors, which means price information is incorporated faster, leaving less room for the continuation effect that drives momentum returns.
+
+**Seasonality** — Some research on the Indian market has documented January-effect-like seasonality in momentum. SpectraQuant does not adjust for seasonality in its factor construction; the raw 12-1 score is used directly.
+
+### Momentum in portfolio attribution
+
+When SpectraQuant runs factor attribution on your portfolio, the momentum beta (β) measures how much of your portfolio's return variability co-moves with the NSE momentum factor return series.
+
+A positive momentum beta does not imply that your portfolio is a momentum strategy. It means that, over the measurement window, your portfolio's returns tended to move in the same direction as the momentum factor — possibly because you hold stocks that happened to be recent outperformers, or because your portfolio is concentrated in sectors currently in momentum.
+
+A high positive momentum beta combined with a high R² suggests that momentum is a meaningful driver of your portfolio's recent performance. A near-zero momentum beta suggests your returns have been largely orthogonal to price continuation effects.
+
+### The limits of momentum
+
+Momentum is a descriptive tool, not a predictive one. A high current momentum score reflects past price behaviour. Whether that behaviour continues depends on conditions that no factor model can reliably forecast.
+
+SpectraQuant presents momentum analysis so that investors can understand the character of their portfolios — not to suggest any course of action. Past factor performance does not guarantee future results.

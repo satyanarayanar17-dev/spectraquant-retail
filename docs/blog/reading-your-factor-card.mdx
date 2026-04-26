@@ -1,0 +1,51 @@
+---
+title: "Reading Your Factor Card"
+date: "2024-02-20"
+excerpt: "The SpectraQuant factor card shows beta estimates, alpha, R², and a collinearity warning. Here is what each number means and how to read them together."
+---
+
+## Reading Your Factor Card
+
+When you run factor attribution on a portfolio in SpectraQuant, the result is a factor card — a table of statistical estimates that describes how your portfolio's returns have co-varied with the five systematic factors over the measurement window. This post explains what each output means.
+
+### The beta table
+
+The central element of the factor card is the beta (β) table. Each row corresponds to one factor — momentum, value, quality, low-vol, and size. The columns are:
+
+**β (beta)** — The estimated loading of your portfolio on that factor. A beta of 0.8 on momentum means that, on average, when the NSE momentum factor return was 1%, your portfolio returned approximately 0.8% of that — holding other factors constant. Beta is estimated via OLS regression of your portfolio's return series against the five factor return series.
+
+**SE (standard error)** — The statistical uncertainty around the beta estimate. Larger standard errors indicate that the data does not strongly constrain the estimate. A beta of 0.8 with an SE of 0.9 is essentially indistinguishable from zero.
+
+**95% CI** — The confidence interval derived from the beta and standard error. If this interval excludes zero, the factor exposure is statistically distinguishable from zero at the 95% level. SpectraQuant flags this as "95% CI clear" in the significance column.
+
+**P-value** — The probability of observing a beta at least as large as estimated if the true beta were zero. A p-value below 0.05 is conventionally considered statistically significant, though this threshold is not a hard rule. SpectraQuant marks such rows accordingly.
+
+Standard errors in the factor card are computed using a Newey-West HAC estimator, which accounts for autocorrelation in return series — a necessary correction when working with monthly portfolio data.
+
+### Alpha
+
+Alpha is the portion of your portfolio's average return that the five-factor model does not explain. It is the intercept of the regression, annualised for readability.
+
+An alpha near zero means the five factors together account for most of your portfolio's return history. A positive alpha suggests returns in excess of what the factor exposures would predict; a negative alpha suggests the opposite.
+
+Alpha should be interpreted alongside its own confidence interval and p-value, which appear in the factor card. With the relatively short measurement windows typical of retail portfolios, alpha estimates carry substantial uncertainty. A positive alpha that is statistically insignificant is consistent with luck as much as skill.
+
+### R² and Adjusted R²
+
+R² measures what fraction of your portfolio's return variance is explained by the five-factor model. An R² of 0.72 means 72% of the variation in your portfolio's returns is attributable to the five factors combined.
+
+Adjusted R² penalises for the number of explanatory variables (five in this case), making it a more conservative measure. When R² and Adjusted R² diverge substantially, the model may be overfitting the available data.
+
+High R² is not universally desirable. A highly diversified portfolio that closely tracks the broad market will naturally have a high R², because the factors collectively span much of the market return. A concentrated thematic portfolio may have a lower R², with the unexplained residual reflecting the idiosyncratic nature of the holdings.
+
+### The collinearity warning
+
+If the condition number of the factor covariance matrix exceeds 30, SpectraQuant displays a collinearity warning on the factor card.
+
+Collinearity arises when two or more factor return series move closely together over the measurement window — for example, if momentum and quality have been highly correlated during the period analysed. When this occurs, OLS cannot cleanly separate the contribution of each factor. The individual beta estimates become less reliable, even though the overall R² of the model remains valid.
+
+When the collinearity warning is active, the combined R² is more informative than any individual beta. The warning does not mean the analysis is wrong — it means the individual factor contributions should be interpreted with additional caution.
+
+### Reading the card as a whole
+
+The factor card is most informative when read as a system, not as isolated numbers. A portfolio with high momentum beta, low R², and a collinearity warning tells a different story than one with the same momentum beta, high R², and no warning. The goal is to build an accurate picture of what has driven your portfolio's historical returns — not to draw conclusions from any single number in isolation.

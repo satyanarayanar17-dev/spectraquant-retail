@@ -16,6 +16,8 @@ class Settings:
     holdings_enc_key: str
     allowed_origins: tuple[str, ...]
     log_level: str
+    founder_email: str = ""
+    razorpay_webhook_secret: str = ""
     version: str = "0.1.0"
 
     @property
@@ -50,6 +52,8 @@ def get_settings() -> Settings:
         holdings_enc_key=_require_env("HOLDINGS_ENC_KEY"),
         allowed_origins=_parse_allowed_origins(os.getenv("ALLOWED_ORIGINS")),
         log_level=os.getenv("LOG_LEVEL", "INFO").upper(),
+        founder_email=os.getenv("FOUNDER_EMAIL", ""),
+        razorpay_webhook_secret=os.getenv("RAZORPAY_WEBHOOK_SECRET", ""),
     )
 
 

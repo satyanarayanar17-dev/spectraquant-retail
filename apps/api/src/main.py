@@ -13,7 +13,7 @@ from src import __version__
 from src.config import get_settings
 from src.db import dispose_engine
 from src.logging import configure_logging
-from src.routers import analysis, factors, portfolio
+from src.routers import admin, analysis, factors, portfolio, user, webhooks
 
 
 def create_app() -> FastAPI:
@@ -54,6 +54,10 @@ def create_app() -> FastAPI:
     app.include_router(portfolio.router)
     app.include_router(analysis.router)
     app.include_router(factors.router)
+    app.include_router(user.router)
+    app.include_router(user.billing_router)
+    app.include_router(admin.router)
+    app.include_router(webhooks.router)
     return app
 
 
