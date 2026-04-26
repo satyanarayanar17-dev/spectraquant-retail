@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import numpy as np
 import pandas as pd
-import statsmodels.api as sm  # type: ignore[import-untyped]
+import statsmodels.api as sm
 from pydantic import BaseModel
 
 from spectraquant_core.errors import InsufficientDataError

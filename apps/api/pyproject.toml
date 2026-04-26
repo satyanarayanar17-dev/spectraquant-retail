@@ -58,6 +58,8 @@ module = [
     "structlog.*",
     "spectraquant_core.*",
     "yfinance",
+    "sentry_sdk",
+    "sentry_sdk.*",
 ]
 ignore_missing_imports = true
 

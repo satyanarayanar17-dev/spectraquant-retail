@@ -23,13 +23,9 @@ def _init_sentry() -> None:
     if not dsn:
         return
     try:
-        import sentry_sdk  # type: ignore[import-untyped]
-        from sentry_sdk.integrations.fastapi import (
-            FastApiIntegration,  # type: ignore[import-untyped]
-        )
-        from sentry_sdk.integrations.sqlalchemy import (
-            SqlalchemyIntegration,  # type: ignore[import-untyped]
-        )
+        import sentry_sdk
+        from sentry_sdk.integrations.fastapi import FastApiIntegration
+        from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
 
         sentry_sdk.init(
             dsn=dsn,

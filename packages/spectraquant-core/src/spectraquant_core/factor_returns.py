@@ -36,7 +36,7 @@ _MIN_UNIVERSE = 250
 def _xnse_trading_days(start: date, end: date) -> pd.DatetimeIndex:
     cal = mcal.get_calendar("XNSE")
     schedule = cal.schedule(start_date=start, end_date=end)
-    return mcal.date_range(schedule, frequency="1D").normalize()
+    return pd.DatetimeIndex(mcal.date_range(schedule, frequency="1D").normalize())
 
 
 def _first_trading_day_of_each_month(

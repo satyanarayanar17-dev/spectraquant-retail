@@ -96,8 +96,8 @@ export default function MethodologyPage() {
           {process.env.NEXT_PUBLIC_BACKFILL_START_DATE ?? "April 21, 2023"} to the
           present were computed retrospectively using historical price and fundamental
           data. Back-tested factor returns are subject to look-ahead bias, overfitting,
-          and other limitations not present in live returns. Past factor performance
-          does not guarantee future results.
+          and other limitations not present in live returns.
+          Past factor performance does not guarantee future results.
         </p>
       </section>
 
