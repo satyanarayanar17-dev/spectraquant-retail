@@ -36,12 +36,14 @@ ALTER TABLE public.rate_limit_buckets  ENABLE ROW LEVEL SECURITY;
 -- profiles: self read/update only
 ------------------------------------------------------------------------
 
+DROP POLICY IF EXISTS profiles_self_select ON public.profiles;
 CREATE POLICY profiles_self_select
   ON public.profiles
   FOR SELECT
   TO authenticated
   USING (id = auth.uid());
 
+DROP POLICY IF EXISTS profiles_self_update ON public.profiles;
 CREATE POLICY profiles_self_update
   ON public.profiles
   FOR UPDATE
@@ -56,6 +58,7 @@ CREATE POLICY profiles_self_update
 -- subscriptions: self read only. writes via service_role (webhook handler).
 ------------------------------------------------------------------------
 
+DROP POLICY IF EXISTS subscriptions_self_select ON public.subscriptions;
 CREATE POLICY subscriptions_self_select
   ON public.subscriptions
   FOR SELECT
@@ -66,18 +69,21 @@ CREATE POLICY subscriptions_self_select
 -- portfolios: self CRUD
 ------------------------------------------------------------------------
 
+DROP POLICY IF EXISTS portfolios_self_select ON public.portfolios;
 CREATE POLICY portfolios_self_select
   ON public.portfolios
   FOR SELECT
   TO authenticated
   USING (user_id = auth.uid() AND deleted_at IS NULL);
 
+DROP POLICY IF EXISTS portfolios_self_insert ON public.portfolios;
 CREATE POLICY portfolios_self_insert
   ON public.portfolios
   FOR INSERT
   TO authenticated
   WITH CHECK (user_id = auth.uid());
 
+DROP POLICY IF EXISTS portfolios_self_update ON public.portfolios;
 CREATE POLICY portfolios_self_update
   ON public.portfolios
   FOR UPDATE
@@ -85,6 +91,7 @@ CREATE POLICY portfolios_self_update
   USING (user_id = auth.uid())
   WITH CHECK (user_id = auth.uid());
 
+DROP POLICY IF EXISTS portfolios_self_soft_delete ON public.portfolios;
 CREATE POLICY portfolios_self_soft_delete
   ON public.portfolios
   FOR UPDATE
@@ -96,6 +103,7 @@ CREATE POLICY portfolios_self_soft_delete
 -- portfolio_analyses: readable if user owns the portfolio
 ------------------------------------------------------------------------
 
+DROP POLICY IF EXISTS portfolio_analyses_self_select ON public.portfolio_analyses;
 CREATE POLICY portfolio_analyses_self_select
   ON public.portfolio_analyses
   FOR SELECT
@@ -115,6 +123,7 @@ CREATE POLICY portfolio_analyses_self_select
 -- saved_screens, alerts, api_keys: self CRUD
 ------------------------------------------------------------------------
 
+DROP POLICY IF EXISTS saved_screens_self_all ON public.saved_screens;
 CREATE POLICY saved_screens_self_all
   ON public.saved_screens
   FOR ALL
@@ -122,6 +131,7 @@ CREATE POLICY saved_screens_self_all
   USING (user_id = auth.uid())
   WITH CHECK (user_id = auth.uid());
 
+DROP POLICY IF EXISTS alerts_self_all ON public.alerts;
 CREATE POLICY alerts_self_all
   ON public.alerts
   FOR ALL
@@ -129,18 +139,21 @@ CREATE POLICY alerts_self_all
   USING (user_id = auth.uid())
   WITH CHECK (user_id = auth.uid());
 
+DROP POLICY IF EXISTS api_keys_self_select ON public.api_keys;
 CREATE POLICY api_keys_self_select
   ON public.api_keys
   FOR SELECT
   TO authenticated
   USING (user_id = auth.uid());
 
+DROP POLICY IF EXISTS api_keys_self_insert ON public.api_keys;
 CREATE POLICY api_keys_self_insert
   ON public.api_keys
   FOR INSERT
   TO authenticated
   WITH CHECK (user_id = auth.uid());
 
+DROP POLICY IF EXISTS api_keys_self_revoke ON public.api_keys;
 CREATE POLICY api_keys_self_revoke
   ON public.api_keys
   FOR UPDATE
@@ -152,34 +165,42 @@ CREATE POLICY api_keys_self_revoke
 -- Market data: read-only for all authenticated users
 ------------------------------------------------------------------------
 
+DROP POLICY IF EXISTS symbols_read_authenticated ON public.symbols;
 CREATE POLICY symbols_read_authenticated
   ON public.symbols
   FOR SELECT TO authenticated USING (true);
 
+DROP POLICY IF EXISTS eod_prices_read_authenticated ON public.eod_prices;
 CREATE POLICY eod_prices_read_authenticated
   ON public.eod_prices
   FOR SELECT TO authenticated USING (true);
 
+DROP POLICY IF EXISTS index_membership_read_authenticated ON public.index_membership;
 CREATE POLICY index_membership_read_authenticated
   ON public.index_membership
   FOR SELECT TO authenticated USING (true);
 
+DROP POLICY IF EXISTS corporate_actions_read_authenticated ON public.corporate_actions;
 CREATE POLICY corporate_actions_read_authenticated
   ON public.corporate_actions
   FOR SELECT TO authenticated USING (true);
 
+DROP POLICY IF EXISTS fundamentals_read_authenticated ON public.fundamentals;
 CREATE POLICY fundamentals_read_authenticated
   ON public.fundamentals
   FOR SELECT TO authenticated USING (true);
 
+DROP POLICY IF EXISTS risk_free_rate_read_authenticated ON public.risk_free_rate;
 CREATE POLICY risk_free_rate_read_authenticated
   ON public.risk_free_rate
   FOR SELECT TO authenticated USING (true);
 
+DROP POLICY IF EXISTS factor_scores_read_authenticated ON public.factor_scores;
 CREATE POLICY factor_scores_read_authenticated
   ON public.factor_scores
   FOR SELECT TO authenticated USING (true);
 
+DROP POLICY IF EXISTS factor_returns_read_authenticated ON public.factor_returns;
 CREATE POLICY factor_returns_read_authenticated
   ON public.factor_returns
   FOR SELECT TO authenticated USING (true);

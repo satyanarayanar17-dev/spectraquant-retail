@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS public.symbols (
   updated_at      TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-CREATE TRIGGER symbols_touch_updated_at
+CREATE OR REPLACE TRIGGER symbols_touch_updated_at
   BEFORE UPDATE ON public.symbols
   FOR EACH ROW EXECUTE FUNCTION public.touch_updated_at();
 
@@ -197,7 +197,7 @@ CREATE TABLE IF NOT EXISTS public.profiles (
   updated_at           TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-CREATE TRIGGER profiles_touch_updated_at
+CREATE OR REPLACE TRIGGER profiles_touch_updated_at
   BEFORE UPDATE ON public.profiles
   FOR EACH ROW EXECUTE FUNCTION public.touch_updated_at();
 
@@ -217,7 +217,7 @@ END;
 $$;
 
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
-CREATE TRIGGER on_auth_user_created
+CREATE OR REPLACE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
 
@@ -278,7 +278,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS portfolios_user_contenthash_day_idx
   ON public.portfolios (user_id, content_hash, ((created_at AT TIME ZONE 'UTC')::date))
   WHERE deleted_at IS NULL;
 
-CREATE TRIGGER portfolios_touch_updated_at
+CREATE OR REPLACE TRIGGER portfolios_touch_updated_at
   BEFORE UPDATE ON public.portfolios
   FOR EACH ROW EXECUTE FUNCTION public.touch_updated_at();
 
