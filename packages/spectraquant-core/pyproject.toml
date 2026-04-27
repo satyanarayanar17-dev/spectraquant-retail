@@ -42,8 +42,14 @@ warn_return_any = true
 warn_unused_ignores = true
 
 [[tool.mypy.overrides]]
-module = ["statsmodels.*", "pandas_market_calendars.*"]
+module = [
+    "statsmodels.*",
+    "statsmodels",
+    "pandas_market_calendars",
+    "pandas_market_calendars.*",
+]
 ignore_missing_imports = true
+disable_error_code = ["import-untyped"]
 
 # Tests are exercised by pytest, not mypy. Strict typing on production code
 # stays — but pandas/numpy overload edges and pytest fixture parameters

@@ -114,7 +114,7 @@ def main(argv: list[str] | None = None) -> int:
             )
             mom = np.array([r["long_short_return"] for r in mom_rows], dtype=float)
             if len(mom) > 20:
-                sharpe = (mom.mean() / mom.std(ddof=1)) * math.sqrt(252)
+                sharpe = float((mom.mean() / mom.std(ddof=1)) * math.sqrt(252))
                 if 0.2 <= sharpe <= 1.5:
                     print(f"PASS [sharpe] momentum Sharpe={sharpe:.2f} ✓")
                 else:

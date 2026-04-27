@@ -54,14 +54,26 @@ warn_unused_ignores = true
 
 [[tool.mypy.overrides]]
 module = [
+    "jose",
     "jose.*",
+    "structlog",
     "structlog.*",
+    "spectraquant_core",
     "spectraquant_core.*",
     "yfinance",
     "sentry_sdk",
     "sentry_sdk.*",
+    "statsmodels",
+    "statsmodels.*",
+    "pandas_market_calendars",
+    "pandas_market_calendars.*",
+    "asyncpg",
+    "asyncpg.*",
+    "redis",
+    "redis.*",
 ]
 ignore_missing_imports = true
+disable_error_code = ["import-untyped"]
 
 [[tool.mypy.overrides]]
 module = "src.jobs.*"
