@@ -65,6 +65,10 @@ def create_app() -> FastAPI:
     app.add_middleware(
         CORSMiddleware,
         allow_origins=list(settings.allowed_origins),
+        # Allow Vercel preview/production deploys (*.vercel.app) so the first
+        # smoke test against the temporary Vercel URL works before custom DNS
+        # is wired. Custom production domain still goes through allow_origins.
+        allow_origin_regex=r"https://([a-z0-9-]+\.)*vercel\.app",
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],

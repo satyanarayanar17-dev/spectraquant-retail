@@ -36,9 +36,16 @@ def _require_env(name: str) -> str:
     return value
 
 
+_DEFAULT_ALLOWED_ORIGINS: tuple[str, ...] = (
+    "http://localhost:3000",
+    "https://spectraquant.in",
+    "https://www.spectraquant.in",
+)
+
+
 def _parse_allowed_origins(raw_value: str | None) -> tuple[str, ...]:
     if raw_value is None or not raw_value.strip():
-        return ("http://localhost:3000",)
+        return _DEFAULT_ALLOWED_ORIGINS
     return tuple(origin.strip() for origin in raw_value.split(",") if origin.strip())
 
 
