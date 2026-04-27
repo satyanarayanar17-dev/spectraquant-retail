@@ -12,7 +12,7 @@
     ]
   },
   "deploy": {
-    "startCommand": "uvicorn src.main:app --app-dir apps/api --host 0.0.0.0 --port $PORT",
+    "startCommand": "sh -c 'uvicorn src.main:app --app-dir apps/api --host 0.0.0.0 --port ${PORT:-8080}'",
     "healthcheckPath": "/health",
     "healthcheckTimeout": 60,
     "restartPolicyType": "ON_FAILURE",
