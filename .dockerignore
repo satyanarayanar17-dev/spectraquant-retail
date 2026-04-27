@@ -1,0 +1,40 @@
+# Keep the API image small and the build cache tight.
+# Anything not needed by apps/api at build or runtime is excluded.
+
+# Frontend — deployed separately on Vercel.
+apps/web
+
+# Infra and ops — not needed inside the runtime image.
+infra
+.github
+docs
+
+# Other Python packages in the monorepo (none currently, but future-proof).
+packages/shared-types
+packages/compliance-rules
+
+# Local development artifacts.
+.venv
+.mypy_cache
+.ruff_cache
+.pytest_cache
+node_modules
+**/__pycache__
+**/*.pyc
+
+# Editor / OS noise.
+.git
+.gitignore
+.DS_Store
+.idea
+.vscode
+
+# Secrets — never bake into the image; Railway injects via env vars.
+.env
+.env.*
+!.env.example
+
+# Markdown / handoff docs not needed at runtime.
+*.md
+!apps/api/**/*.md
+!packages/spectraquant-core/**/*.md
