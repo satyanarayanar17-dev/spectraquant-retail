@@ -63,11 +63,11 @@ def main(argv: list[str] | None = None) -> int:
 
             for factor in factors:
                 rows = await conn.fetch(
-                    "SELECT trade_date FROM factor_returns WHERE factor_name=$1 "
-                    "AND trade_date BETWEEN $2 AND $3",
+                    "SELECT return_date FROM factor_returns WHERE factor=$1 "
+                    "AND return_date BETWEEN $2 AND $3",
                     factor, start, end,
                 )
-                present = {r["trade_date"] for r in rows}
+                present = {r["return_date"] for r in rows}
                 missing = expected_td - present
                 if missing:
                     sample = sorted(missing)[:5]
@@ -90,7 +90,7 @@ def main(argv: list[str] | None = None) -> int:
                 for row in sample_dates:
                     zs = await conn.fetch(
                         "SELECT z_score FROM factor_scores "
-                        "WHERE factor_name=$1 AND score_date=$2",
+                        "WHERE factor=$1 AND score_date=$2",
                         factor, row["score_date"],
                     )
                     vals = np.array([r["z_score"] for r in zs], dtype=float)
@@ -108,11 +108,11 @@ def main(argv: list[str] | None = None) -> int:
 
             # --- check 3: momentum Sharpe ∈ [0.2, 1.5] ---
             mom_rows = await conn.fetch(
-                "SELECT long_short_return FROM factor_returns "
-                "WHERE factor_name='momentum' AND trade_date BETWEEN $1 AND $2",
+                "SELECT daily_return FROM factor_returns "
+                "WHERE factor='momentum' AND return_date BETWEEN $1 AND $2",
                 start, end,
             )
-            mom = np.array([r["long_short_return"] for r in mom_rows], dtype=float)
+            mom = np.array([r["daily_return"] for r in mom_rows], dtype=float)
             if len(mom) > 20:
                 sharpe = float((mom.mean() / mom.std(ddof=1)) * math.sqrt(252))
                 if 0.2 <= sharpe <= 1.5:
@@ -128,13 +128,13 @@ def main(argv: list[str] | None = None) -> int:
             fr_data: dict[str, pd.Series] = {}
             for factor in factors:
                 rows = await conn.fetch(
-                    "SELECT trade_date, long_short_return FROM factor_returns "
-                    "WHERE factor_name=$1 AND trade_date BETWEEN $2 AND $3",
+                    "SELECT return_date, daily_return FROM factor_returns "
+                    "WHERE factor=$1 AND return_date BETWEEN $2 AND $3",
                     factor, start, end,
                 )
                 if rows:
                     fr_data[factor] = pd.Series(
-                        {r["trade_date"]: r["long_short_return"] for r in rows}
+                        {r["return_date"]: r["daily_return"] for r in rows}
                     )
             if len(fr_data) >= 2:
                 fr_df = pd.DataFrame(fr_data).dropna()

@@ -138,21 +138,26 @@ async def _handle_subscription_activated(
             INSERT INTO subscriptions (
                 user_id,
                 razorpay_subscription_id,
+                plan,
                 status,
                 tier,
+                amount_paise,
                 period_start,
                 period_end
             )
             VALUES (
                 :user_id,
                 :razorpay_subscription_id,
+                'pro_yearly',
                 'active',
                 'pro',
+                0,
                 :period_start,
                 :period_end
             )
             ON CONFLICT (razorpay_subscription_id) DO UPDATE
-                SET status = 'active'
+                SET status = 'active',
+                    tier   = 'pro'
             """
         ),
         {
@@ -162,6 +167,7 @@ async def _handle_subscription_activated(
             "period_end": period_end,
         },
     )
+
 
 
 # ---------------------------------------------------------------------------
