@@ -6,7 +6,8 @@
     "watchPatterns": [
       "apps/api/**",
       "packages/spectraquant-core/**",
-      "railway.json"
+      "railway.json",
+      "nixpacks.toml"
     ]
   },
   "deploy": {
