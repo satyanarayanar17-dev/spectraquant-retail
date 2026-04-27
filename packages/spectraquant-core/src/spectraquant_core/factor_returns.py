@@ -22,7 +22,7 @@ from datetime import date
 from typing import Literal
 
 import pandas as pd
-import pandas_market_calendars as mcal  # type: ignore[import-untyped]
+import pandas_market_calendars as mcal
 
 from spectraquant_core.errors import PointInTimeLookAheadError
 
