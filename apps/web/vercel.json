@@ -1,11 +1,10 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "pnpm --filter web exec next build",
-  "outputDirectory": "apps/web/.next",
-  "installCommand": "pnpm install --frozen-lockfile",
+  "buildCommand": "cd ../.. && pnpm --filter web build",
+  "outputDirectory": ".next",
+  "installCommand": "cd ../.. && pnpm install --frozen-lockfile",
   "env": {
     "NEXT_PUBLIC_API_URL": "https://api-production-e32b9.up.railway.app",
     "NEXT_PUBLIC_BACKFILL_START_DATE": "2023-04-21"
   }
 }
-
