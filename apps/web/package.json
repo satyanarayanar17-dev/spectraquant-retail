@@ -24,7 +24,7 @@
     "react-dom": "^18",
     "@sentry/nextjs": "^8.0.0",
     "gray-matter": "^4.0.3",
-    "next-mdx-remote": "^5.0.0",
+    "next-mdx-remote": "^6.0.0",
     "posthog-js": "^1.96.0",
     "recharts": "latest",
     "tailwind-merge": "latest"
